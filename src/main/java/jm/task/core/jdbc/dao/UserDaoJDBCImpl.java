@@ -3,6 +3,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,14 +12,14 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
 
+
     public UserDaoJDBCImpl() throws ClassNotFoundException, SQLException {
 
     }
-     private Statement statement = Util.connect().createStatement();
-
 
     public void createUsersTable()  {
-       try {
+       try (Connection con = Util.connect();
+            Statement statement = con.createStatement()) {
            statement.executeUpdate("CREATE TABLE `users` (\n" +
                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
                    "  `name` VARCHAR(45) NULL,\n" +
@@ -32,7 +33,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try {
+        try (Connection con = Util.connect();
+             Statement statement = con.createStatement()) {
             statement.executeUpdate("DROP TABLE users");
         } catch (SQLException ignore) {
 
@@ -40,7 +42,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try {
+        try (Connection con = Util.connect();
+             Statement statement = con.createStatement()) {
             statement.execute(String.format("INSERT INTO users (name,lastName,age) VALUES ('%s', '%s', '%d')",name,lastName,age));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -48,7 +51,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try {
+        try (Connection con = Util.connect();
+             Statement statement = con.createStatement()) {
             statement.executeUpdate(String.format("DELETE FROM users WHERE id=%d",id));
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -57,7 +61,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
+        try (Connection con = Util.connect();
+             Statement statement = con.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
                 User user = new User();
@@ -75,7 +80,8 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try {
+        try (Connection con = Util.connect();
+             Statement statement = con.createStatement()) {
             statement.executeUpdate("TRUNCATE TABLE users");
         } catch (SQLException e) {
             throw new RuntimeException(e);
