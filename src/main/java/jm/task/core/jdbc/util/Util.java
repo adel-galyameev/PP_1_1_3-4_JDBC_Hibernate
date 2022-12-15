@@ -21,7 +21,6 @@ public class Util {
 
         try {
             Connection con = DriverManager.getConnection(URL,NAME_USER,PASSWORD);
-            //Statement statement = con.createStatement();
             return con;
 
         } catch (SQLException e) {
