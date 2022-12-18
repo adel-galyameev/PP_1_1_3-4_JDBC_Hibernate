@@ -31,7 +31,7 @@ public class Main {
 
         us.cleanUsersTable();
 
-        us.removeUserById(5);
+        us.removeUserById(2);
 
         us.dropUsersTable();
 
