@@ -60,9 +60,7 @@ public class Util {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (sessionFactory != null) {
-            System.out.println("ok");
-        }
+
         return sessionFactory;
     }
     // реализуйте настройку соеденения с БД
